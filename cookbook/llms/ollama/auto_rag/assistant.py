@@ -52,7 +52,7 @@ def get_auto_rag_assistant(
         # This setting tells the LLM to format messages in markdown
         markdown=True,
         # Adds chat history to messages
-        # add_chat_history_to_messages=True,
+        add_chat_history_to_messages=True,
         add_datetime_to_instructions=True,
         debug_mode=debug_mode,
     )

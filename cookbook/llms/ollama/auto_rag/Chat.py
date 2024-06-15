@@ -4,8 +4,8 @@ from lib.common import get_username, load_assistant, restart_assistant
 
 import streamlit as st
 from phi.assistant import Assistant
-from phi.document import Document
-from phi.document.reader.pdf import PDFReader
+# from phi.document import Document
+# from phi.document.reader.pdf import PDFReader
 # from phi.document.reader.website import WebsiteReader
 from phi.utils.log import logger
 from phi.assistant.run import AssistantRun
