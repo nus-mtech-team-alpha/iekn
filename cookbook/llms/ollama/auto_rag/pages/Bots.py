@@ -11,6 +11,8 @@ def main() -> None:
     get_username(st)
     auto_rag_assistant = load_assistant()
 
+    st.write(f"{auto_rag_assistant.knowledge_base.vector_db.get_count()} collections")
+
     # Load knowledge base
     if auto_rag_assistant.knowledge_base:
         # -*- Add websites to knowledge base
@@ -64,7 +66,8 @@ def main() -> None:
             restart_assistant()
 
 
-# st.title("Local Auto RAG")
+st.title("Knowledge Base Management")
+
 # st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
 
 main()

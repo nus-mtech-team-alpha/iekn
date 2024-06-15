@@ -10,15 +10,15 @@ from phi.assistant import Assistant
 from phi.utils.log import logger
 from phi.assistant.run import AssistantRun
 
-# from assistant import get_auto_rag_assistant  # type: ignore
+from assistant import get_auto_rag_assistant  # type: ignore
 
 nest_asyncio.apply()
 st.set_page_config(
-    page_title="Autonomous RAG",
-    page_icon=":orange_heart:",
+    page_title="Intelligent Enterprise Knowledge Navigator",
+    page_icon=":robot_face:",
 )
-st.title("Local Auto RAG")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
+st.title("Intelligent Enterprise Knowledge Navigator")
+# st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
 
 # ## load or create new gpt
 # def load_assistant():
