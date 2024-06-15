@@ -1,15 +1,16 @@
 import nest_asyncio
 from typing import List
-from lib.common import get_username
+from lib.common import get_username, load_assistant, restart_assistant
 
 import streamlit as st
 from phi.assistant import Assistant
 from phi.document import Document
 from phi.document.reader.pdf import PDFReader
-from phi.document.reader.website import WebsiteReader
+# from phi.document.reader.website import WebsiteReader
 from phi.utils.log import logger
+from phi.assistant.run import AssistantRun
 
-from assistant import get_auto_rag_assistant  # type: ignore
+# from assistant import get_auto_rag_assistant  # type: ignore
 
 nest_asyncio.apply()
 st.set_page_config(
@@ -19,23 +20,45 @@ st.set_page_config(
 st.title("Local Auto RAG")
 st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
 
+# ## load or create new gpt
+# def load_assistant():
+#     auto_rag_assistant: Assistant
+#     if "auto_rag_assistant" not in st.session_state or st.session_state["auto_rag_assistant"] is None:
+#         logger.info("---*--- Creating Assistant ---*---")
+#         auto_rag_assistant = get_auto_rag_assistant()
+#         auto_rag_assistant.rename_run("New convo..")
+#         st.session_state["auto_rag_assistant"] = auto_rag_assistant
+#     else:
+#         auto_rag_assistant = st.session_state["auto_rag_assistant"]
 
-def restart_assistant():
-    logger.debug("---*--- Restarting Assistant ---*---")
-    st.session_state["auto_rag_assistant"] = None
-    st.session_state["auto_rag_assistant_run_id"] = None
-    if "url_scrape_key" in st.session_state:
-        st.session_state["url_scrape_key"] += 1
-    if "file_uploader_key" in st.session_state:
-        st.session_state["file_uploader_key"] += 1
-    st.rerun()
+#     # Create assistant run (i.e. log to database) and save run_id in session state
+#     try:
+#         st.session_state["auto_rag_assistant_run_id"] = auto_rag_assistant.create_run()
+#     except Exception:
+#         st.warning("Could not create assistant, is the database running?")
+#         return
+    
+#     return auto_rag_assistant
 
-def loadHistory(new_auto_rag_assistant_run_id):
+# ## restart streamlit session (new gpt created)
+# def restart_assistant():
+#     logger.debug("---*--- Restarting Assistant ---*---")
+#     st.session_state["auto_rag_assistant"] = None
+#     st.session_state["auto_rag_assistant_run_id"] = None
+#     if "url_scrape_key" in st.session_state:
+#         st.session_state["url_scrape_key"] += 1
+#     if "file_uploader_key" in st.session_state:
+#         st.session_state["file_uploader_key"] += 1
+#     st.rerun()
+
+## load past chats
+def load_history(new_auto_rag_assistant_run_id):
     if st.session_state["auto_rag_assistant_run_id"] != new_auto_rag_assistant_run_id:
         logger.info(f"---*--- Loading Assistant run: {new_auto_rag_assistant_run_id} ---*---")
         st.session_state["auto_rag_assistant"] = get_auto_rag_assistant(run_id=new_auto_rag_assistant_run_id)
         # st.rerun()
 
+## sidebar UI
 def sidebar(rag):
     # Get username
     get_username(st)
@@ -48,32 +71,12 @@ def sidebar(rag):
     if rag.storage:
         rag_runs: List[AssistantRun] = rag.storage.get_all_runs()
         for r in rag_runs:
-            if r.run_name is None:
-                st.sidebar.button(str(r.run_id), r.run_id, type="primary" if r.run_id == st.session_state["auto_rag_assistant_run_id"] else "secondary", on_click=loadHistory, args=[r.run_id], use_container_width=True)
-            else:
-                st.sidebar.button(str(r.run_name), r.run_id, type="primary" if r.run_id == st.session_state["auto_rag_assistant_run_id"] else "secondary", on_click=loadHistory, args=[r.run_id], use_container_width=True)
+            st.sidebar.button(str(r.run_id if r.run_name is None else r.run_name), r.run_id, type="primary" if r.run_id == st.session_state["auto_rag_assistant_run_id"] else "secondary", on_click=load_history, args=[r.run_id], use_container_width=True)
+    # if st.sidebar.button("Auto Rename"):
+    #     rag.auto_rename_run()
 
-    if st.sidebar.button("Auto Rename"):
-        rag.auto_rename_run()
-
-def main() -> None:    
-    # Get the assistant
-    auto_rag_assistant: Assistant
-    if "auto_rag_assistant" not in st.session_state or st.session_state["auto_rag_assistant"] is None:
-        logger.info("---*--- Creating Assistant ---*---")
-        auto_rag_assistant = get_auto_rag_assistant()
-        auto_rag_assistant.rename_run("New convo..")
-        st.session_state["auto_rag_assistant"] = auto_rag_assistant
-    else:
-        auto_rag_assistant = st.session_state["auto_rag_assistant"]
-
-    # Create assistant run (i.e. log to database) and save run_id in session state
-    try:
-        st.session_state["auto_rag_assistant_run_id"] = auto_rag_assistant.create_run()
-    except Exception:
-        st.warning("Could not create assistant, is the database running?")
-        return
-
+## chat UI
+def chat(auto_rag_assistant):
     # Load existing messages
     assistant_chat_history = auto_rag_assistant.memory.get_chat_history()
     if len(assistant_chat_history) > 0:
@@ -86,7 +89,7 @@ def main() -> None:
     # Prompt for user input
     if prompt := st.chat_input():
         st.session_state["messages"].append({"role": "user", "content": prompt})
-
+        
     # Display existing chat messages
     for message in st.session_state["messages"]:
         if message["role"] == "system":
@@ -106,6 +109,16 @@ def main() -> None:
                 resp_container.markdown(response)
             st.session_state["messages"].append({"role": "assistant", "content": response})
 
+    #rename the chat after 6 messages
+    if len(st.session_state["messages"]) == 6:
+        auto_rag_assistant.auto_rename_run()
+
+## main 
+def main() -> None:    
+    # Get the assistant
+    auto_rag_assistant: Assistant = load_assistant()
+    chat(auto_rag_assistant)
+    
     # Load knowledge base
     # if auto_rag_assistant.knowledge_base:
     #     # -*- Add websites to knowledge base
