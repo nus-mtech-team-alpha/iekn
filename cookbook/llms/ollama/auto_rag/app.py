@@ -16,8 +16,7 @@ st.set_page_config(
     page_icon=":orange_heart:",
 )
 st.title("Local Auto RAG")
-st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
-
+# st.markdown("##### :orange_heart: built using [phidata](https://github.com/phidatahq/phidata)")
 
 def restart_assistant():
     logger.debug("---*--- Restarting Assistant ---*---")
