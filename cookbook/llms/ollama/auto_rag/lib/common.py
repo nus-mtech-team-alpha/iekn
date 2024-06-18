@@ -30,6 +30,8 @@ def load_assistant():
     else:
         auto_rag_assistant = st.session_state["auto_rag_assistant"]
 
+    #TODO: Check for latest chat session, if no history, reuse 
+    
     # Create assistant run (i.e. log to database) and save run_id in session state
     try:
         st.session_state["auto_rag_assistant_run_id"] = auto_rag_assistant.create_run()

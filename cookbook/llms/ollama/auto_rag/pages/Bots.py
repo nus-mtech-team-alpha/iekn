@@ -6,12 +6,19 @@ from phi.document.reader.website import WebsiteReader
 from phi.document.reader.pdf import PDFReader
 from phi.document import Document
 
+st.set_page_config(
+    page_title="Intelligent Enterprise Knowledge Navigator - Bots Management",
+    page_icon=":robot_face:",
+)
 
 def main() -> None:
     get_username(st)
     auto_rag_assistant = load_assistant()
 
-    st.write(f"{auto_rag_assistant.knowledge_base.vector_db.get_count()} collections")
+    try:
+        st.write(f"{auto_rag_assistant.knowledge_base.vector_db.get_count()} collections")
+    except:
+        st.write("0 collections")
 
     # Load knowledge base
     if auto_rag_assistant.knowledge_base:
