@@ -8,7 +8,7 @@ from phi.embedder.ollama import OllamaEmbedder
 from phi.vectordb.pgvector import PgVector2
 from phi.storage.assistant.postgres import PgAssistantStorage
 
-db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
+db_url = "postgresql+psycopg://ai:ai@pgvector-db:5432/ai"
 
 
 def get_auto_rag_assistant(
@@ -22,13 +22,13 @@ def get_auto_rag_assistant(
         name="auto_rag_assistant_ollama",
         run_id=run_id,
         user_id=user_id,
-        llm=Ollama(model="adrienbrault/nous-hermes2pro-llama3-8b:q8_0"),
+        llm=Ollama(host="ollama", model="adrienbrault/nous-hermes2pro-llama3-8b:q8_0"),
         storage=PgAssistantStorage(table_name="auto_rag_assistant_ollama", db_url=db_url),
         knowledge_base=AssistantKnowledge(
             vector_db=PgVector2(
                 db_url=db_url,
                 collection="auto_rag_documents_groq_ollama",
-                embedder=OllamaEmbedder(model="nomic-embed-text", dimensions=768),
+                embedder=OllamaEmbedder(host="ollama", model="nomic-embed-text", dimensions=768),
             ),
             # 1 reference are added to the prompt
             num_documents=1,
