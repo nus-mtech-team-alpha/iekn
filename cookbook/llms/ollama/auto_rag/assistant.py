@@ -3,7 +3,7 @@ from typing import Optional
 from phi.assistant import Assistant
 from phi.knowledge import AssistantKnowledge
 from phi.llm.ollama import Ollama
-from phi.tools.duckduckgo import DuckDuckGo
+# from phi.tools.duckduckgo import DuckDuckGo
 from phi.embedder.ollama import OllamaEmbedder
 from phi.vectordb.pgvector import PgVector2
 from phi.storage.assistant.postgres import PgAssistantStorage
@@ -48,11 +48,11 @@ def get_auto_rag_assistant(
         search_knowledge=True,
         # This setting gives the LLM a tool to get chat history
         read_chat_history=True,
-        tools=[DuckDuckGo()],
+        # tools=[DuckDuckGo()],
         # This setting tells the LLM to format messages in markdown
         markdown=True,
         # Adds chat history to messages
-        # add_chat_history_to_messages=True,
+        add_chat_history_to_messages=True,
         add_datetime_to_instructions=True,
         debug_mode=debug_mode,
     )
