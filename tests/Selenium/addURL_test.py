@@ -3,11 +3,8 @@
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
 import unittest
 import time
-import re
 
 app_URL = "http://localhost:8501/"
 test_URL = "https://www.channelnewsasia.com/singapore/singapore-budget-2024-lawrence-wong-live-blog-4122681"
