@@ -17,7 +17,7 @@ def main() -> None:
 
     try:
         st.write(f"{auto_rag_assistant.knowledge_base.vector_db.get_count()} collections")
-    except:
+    except Exception:
         st.write("0 collections")
 
     # Load knowledge base
