@@ -3,11 +3,11 @@
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
+import unittest
+import time
+import re
 
 app_URL = "http://localhost:8501/"
 test_URL = "https://www.channelnewsasia.com/singapore/singapore-budget-2024-lawrence-wong-live-blog-4122681"
@@ -35,16 +35,6 @@ class AddURL(unittest.TestCase):
         time.sleep(5)
         driver.save_screenshot(screenshot_path)
         driver.quit()
-    
-    def is_element_present(self, how, what):
-        try: self.driver.find_element(by=how, value=what)
-        except NoSuchElementException as e: return False
-        return True
-    
-    def is_alert_present(self):
-        try: self.driver.switch_to_alert()
-        except NoAlertPresentException as e: return False
-        return True
     
     def close_alert_and_get_its_text(self):
         try:
