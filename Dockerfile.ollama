@@ -3,11 +3,9 @@ FROM ollama/ollama:latest
 # Run the command to pull Llama3 during the build process
 COPY ./ollama_pull.sh /app/ollama_pull.sh
 WORKDIR /app
-
-RUN chmod +x ollama_pull.sh \
-    && ./ollama_pull.sh
-
-ENTRYPOINT [ "ollama" ]
+RUN sed -i 's/\r$//' ./ollama_pull.sh && chmod +x ./ollama_pull.sh
+RUN ./ollama_pull.sh
 
 # Start the service
+ENTRYPOINT [ "ollama" ]
 CMD ["serve"]
