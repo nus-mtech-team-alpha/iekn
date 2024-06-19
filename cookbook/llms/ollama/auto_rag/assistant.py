@@ -48,7 +48,7 @@ def get_auto_rag_assistant(
         search_knowledge=True,
         # This setting gives the LLM a tool to get chat history
         read_chat_history=True,
-        # tools=[DuckDuckGo()],
+        tools=[DuckDuckGo()],
         # This setting tells the LLM to format messages in markdown
         markdown=True,
         # Adds chat history to messages
