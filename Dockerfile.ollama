@@ -1,0 +1,13 @@
+FROM ollama/ollama:latest
+
+# Run the command to pull Llama3 during the build process
+COPY ./ollama_pull.sh /app/ollama_pull.sh
+WORKDIR /app
+
+RUN chmod +x ollama_pull.sh \
+    && ./ollama_pull.sh
+
+ENTRYPOINT [ "ollama" ]
+
+# Start the service
+CMD ["serve"]
