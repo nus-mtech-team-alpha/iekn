@@ -33,17 +33,6 @@ class AddURL(unittest.TestCase):
         driver.save_screenshot(screenshot_path)
         driver.quit()
     
-    def close_alert_and_get_its_text(self):
-        try:
-            alert = self.driver.switch_to_alert()
-            alert_text = alert.text
-            if self.accept_next_alert:
-                alert.accept()
-            else:
-                alert.dismiss()
-            return alert_text
-        finally: self.accept_next_alert = True
-    
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
