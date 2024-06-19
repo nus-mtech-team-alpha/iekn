@@ -1,0 +1,34 @@
+services:
+  auto-rag:
+    build:
+      context: .
+      dockerfile: Dockerfile.auto-rag
+    container_name: auto-rag
+    ports:
+      - "8501:8501"
+    depends_on:
+      - pgvector-db
+
+  pgvector-db:
+    image: phidata/pgvector:16
+    container_name: pgvector-db
+    environment:
+      POSTGRES_DB: ai
+      POSTGRES_USER: ai
+      POSTGRES_PASSWORD: ai
+      PGDATA: /var/lib/postgresql/data/pgdata
+    # ports:
+    #   - "5432:5432"
+    # volumes:
+    #   - pgvolume:/var/lib/postgresql/data
+
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+    container_name: ollama
+    # ports:
+    #   - "11434:11434"
+
+# volumes:
+#   pgvolume:
