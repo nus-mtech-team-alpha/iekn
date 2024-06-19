@@ -36,7 +36,7 @@ def get_auto_rag_assistant(
         description="You are an Assistant called 'AutoRAG' that answers questions by calling functions.",
         instructions=[
             "First get additional information about the users question from your knowledge base or the internet.",
-            # "Use the `search_knowledge_base` tool to search your knowledge base or the `duckduckgo_search` tool to search the internet.",
+            "Use the `search_knowledge_base` tool to search your knowledge base or the `duckduckgo_search` tool to search the internet.",
             "If the user asks to summarize the conversation, use the `get_chat_history` tool to get your chat history with the user.",
             "Carefully process the information you have gathered and provide a clear and concise answer to the user.",
             "Respond directly to the user with your answer, do not say 'here is the answer' or 'this is the answer' or 'According to the information provided'",
