@@ -36,7 +36,7 @@ jobs:
 
       - name: Push Ollama image
         run: |
-          docker tag iekn_ollama:latest ${{ secrets.DOCKER_HUB_USERNAME }}/iekn_ollama:latest
+          docker tag iekn_ollama:latest ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn_ollama:latest
           docker push ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn_ollama:latest
 
       - name: Logout from DockerHub
