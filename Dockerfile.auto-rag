@@ -3,4 +3,4 @@ COPY ./cookbook/llms/ollama/auto_rag/ /app
 WORKDIR /app
 RUN pip install --no-cache-dir -r requirements.txt 
 ENTRYPOINT [ "streamlit" ]
-CMD ["run", "app.py"]
+CMD ["run", "Chat.py"]
