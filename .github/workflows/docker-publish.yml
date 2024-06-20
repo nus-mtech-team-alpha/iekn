@@ -31,13 +31,13 @@ jobs:
 
       - name: Push iekn-auto-rag image
         run: |
-          docker tag iekn-auto-rag:latest ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn-auto-rag:latest
-          docker push ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn-auto-rag:latest
+          docker tag iekn_auto-rag:latest ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn_auto-rag:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn_auto-rag:latest
 
       - name: Push Ollama image
         run: |
-          docker tag iekn-ollama:latest ${{ secrets.DOCKER_HUB_USERNAME }}/iekn-ollama:latest
-          docker push ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn-ollama:latest
+          docker tag iekn_ollama:latest ${{ secrets.DOCKER_HUB_USERNAME }}/iekn_ollama:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME_WINDAFORT }}/iekn_ollama:latest
 
       - name: Logout from DockerHub
         run: docker logout
