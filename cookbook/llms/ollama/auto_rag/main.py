@@ -1,4 +1,4 @@
-from lib.common import load_assistant
+from lib.common import get_auto_rag_assistant
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
@@ -8,7 +8,7 @@ from typing import List
 import json
 
 
-from assistant import get_auto_rag_assistant  # type: ignore
+# from assistant import get_auto_rag_assistant  # type: ignore
 
 app = FastAPI()
 
