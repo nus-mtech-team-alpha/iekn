@@ -4,19 +4,13 @@ from typing import Optional
 from phi.assistant import Assistant
 from phi.knowledge import AssistantKnowledge
 from phi.llm.ollama import Ollama
-# from phi.tools.duckduckgo import DuckDuckGo
 from phi.embedder.ollama import OllamaEmbedder
 from phi.vectordb.pgvector import PgVector2
 from phi.storage.assistant.postgres import PgAssistantStorage
 from phi.tools.streamlit.components import (
-    # get_openai_key_sidebar,
-    # check_password,
-    # reload_button_sidebar,
     get_username_sidebar,
 )
 from phi.utils.log import logger
-from phi.assistant import Assistant
-# from assistant import get_auto_rag_assistant  # type: ignore
 
 db_url = "postgresql+psycopg://ai:ai@pgvector-db:5432/ai"
 
