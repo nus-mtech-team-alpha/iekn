@@ -12,7 +12,7 @@ from phi.tools.streamlit.components import (
 )
 from phi.utils.log import logger
 
-db_url = "postgresql+psycopg://ai:ai@pgvector-db:5432/ai"
+db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 
 def get_username(st):
     username = get_username_sidebar()
