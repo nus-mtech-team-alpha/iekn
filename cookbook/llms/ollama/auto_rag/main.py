@@ -1,12 +1,10 @@
 from lib.common import get_auto_rag_assistant
-import uvicorn
+# import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from phi.assistant import Assistant
 from phi.assistant.run import AssistantRun
 from typing import List
-import json
-
 
 # from assistant import get_auto_rag_assistant  # type: ignore
 

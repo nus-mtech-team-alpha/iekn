@@ -8,9 +8,6 @@ from phi.llm.ollama import Ollama
 from phi.embedder.ollama import OllamaEmbedder
 from phi.vectordb.pgvector import PgVector2
 from phi.storage.assistant.postgres import PgAssistantStorage
-
-db_url = "postgresql+psycopg://ai:ai@pgvector-db:5432/ai"
-
 from phi.tools.streamlit.components import (
     # get_openai_key_sidebar,
     # check_password,
@@ -19,8 +16,9 @@ from phi.tools.streamlit.components import (
 )
 from phi.utils.log import logger
 from phi.assistant import Assistant
-from assistant import get_auto_rag_assistant  # type: ignore
+# from assistant import get_auto_rag_assistant  # type: ignore
 
+db_url = "postgresql+psycopg://ai:ai@pgvector-db:5432/ai"
 
 def get_username(st):
     username = get_username_sidebar()
