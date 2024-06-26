@@ -22,7 +22,7 @@ source ~/.venvs/aienv/bin/activate
 ### 3. Install libraries
 
 ```shell
-pip install -r cookbook/llms/ollama/auto_rag/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 4. Run PgVector
@@ -38,33 +38,30 @@ pip install -r cookbook/llms/ollama/auto_rag/requirements.txt
 - OR run using the docker run command
 
 ```shell
-docker run -d \
-  -e POSTGRES_DB=ai \
-  -e POSTGRES_USER=ai \
-  -e POSTGRES_PASSWORD=ai \
-  -e PGDATA=/var/lib/postgresql/data/pgdata \
-  -v pgvolume:/var/lib/postgresql/data \
-  -p 5532:5432 \
-  --name pgvector \
+docker run -d 
+  -e POSTGRES_DB=ai 
+  -e POSTGRES_USER=ai 
+  -e POSTGRES_PASSWORD=ai 
+  -e PGDATA=/var/lib/postgresql/data/pgdata 
+  -v pgvolume:/var/lib/postgresql/data 
+  -p 5532:5432 
+  --name pgvector 
   phidata/pgvector:16
 ```
 
 ### 5. Run Autonomous RAG App
 
 ```shell
-streamlit run cookbook/llms/ollama/auto_rag/app.py
+streamlit run app.py
 ```
 
 - Open [localhost:8501](http://localhost:8501) to view your RAG app.
 - Add websites or PDFs and ask question.
 
-- Example Website: https://techcrunch.com/2024/04/18/meta-releases-llama-3-claims-its-among-the-best-open-models-available/
-- Ask questions like:
-  - What did Meta release?
-  - Summarize news from france
-  - Summarize our conversation
-
-### 6. Message on [discord](https://discord.gg/4MtYHHrgA8) if you have any questions
+### 6. Run API
+```shell
+uvicorn main:app --reload --port 80
+```
 
 ### 7. Star ⭐️ the project if you like it.
 
