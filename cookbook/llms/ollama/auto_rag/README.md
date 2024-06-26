@@ -62,6 +62,7 @@ streamlit run app.py
 ```shell
 uvicorn main:app --reload --port 80
 ```
+- Open [localhost/docs](http://localhost/docs) to view swagger.
 
 ### 7. Star ⭐️ the project if you like it.
 
