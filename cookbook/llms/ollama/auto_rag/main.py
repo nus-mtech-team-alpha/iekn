@@ -74,6 +74,12 @@ def post_chat(run_id, body: ChatRequest):
     auto_rag_assistant = get_auto_rag_assistant(run_id=run_id)
     auto_rag_assistant.read_from_storage()
     
+    assistant_chat_history = auto_rag_assistant.memory.get_chat_history()
+    print("hist len!:",len(assistant_chat_history))
+    if len(assistant_chat_history) == 2:
+        print("renaming chat")
+        rename_run(auto_rag_assistant)
+
     return StreamingResponse(
         chat_response_streamer(auto_rag_assistant, body.message),
         media_type="text/event-stream",
@@ -84,6 +90,18 @@ def chat_response_streamer(assistant: Assistant, message: str) -> Generator:
     for chunk in assistant.run(message):
         yield chunk
 
+'''
+rename session
+'''
+@app.post("/sessions/{run_id}/name")
+def rename_chat(run_id):
+    auto_rag_assistant = get_auto_rag_assistant(run_id=run_id)
+    rename_run(auto_rag_assistant)
+    return {"run_id":run_id, "run_name":auto_rag_assistant.run_name}
+
+def rename_run(assistant):
+    assistant.read_from_storage()
+    assistant.auto_rename_run()
 
 @app.get("/kb")
 def get_kb():
