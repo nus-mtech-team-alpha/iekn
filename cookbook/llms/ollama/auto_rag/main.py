@@ -1,10 +1,11 @@
 from lib.common import get_auto_rag_assistant
 # import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from phi.assistant import Assistant
 from phi.assistant.run import AssistantRun
-from typing import List
+from typing import Generator, List
+from pydantic import BaseModel
 
 # from assistant import get_auto_rag_assistant  # type: ignore
 
@@ -56,3 +57,24 @@ def get_sessions_history(run_id):
     print("hist len:",len(assistant_chat_history))
     return JSONResponse(assistant_chat_history) 
 
+'''
+post query to rag
+'''
+class ChatRequest(BaseModel):
+    message: str
+    user_id: str
+
+@app.post("/sessions/{run_id}/chat")
+def post_chat(run_id, body: ChatRequest):
+    auto_rag_assistant = get_auto_rag_assistant(run_id=run_id)
+
+    return StreamingResponse(
+        chat_response_streamer(auto_rag_assistant, body.message),
+        media_type="text/event-stream",
+    )
+    # return JSONResponse("yo")
+   
+
+def chat_response_streamer(assistant: Assistant, message: str) -> Generator:
+    for chunk in assistant.run(message):
+        yield chunk
