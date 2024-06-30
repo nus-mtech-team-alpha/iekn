@@ -1,42 +1,47 @@
 from lib.common import get_auto_rag_assistant
 # import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 from fastapi.responses import JSONResponse, StreamingResponse
 from phi.assistant import Assistant
 from phi.assistant.run import AssistantRun
-from typing import Generator, List
+from typing import Generator, List, Annotated
 from pydantic import BaseModel
 
 # from assistant import get_auto_rag_assistant  # type: ignore
 
-app = FastAPI()
+app = FastAPI(redoc_url=None)
+class User(BaseModel):
+    user_id: str
 
 
 @app.get("/")
 def get_root():
-    return {"hello":"world"}
+    return {"health":"online"}
 
 '''
 retrieve all sessions with run id and name
 '''
 @app.get("/sessions")
-def get_sessions():
-    auto_rag_assistant: Assistant = get_auto_rag_assistant()
+def get_sessions(user_id: Annotated[str | None, Header()] = None):
+    """
+    Get all sessions by user id. Returns everything if no user id
+    """
+    auto_rag_assistant: Assistant = get_auto_rag_assistant(user_id=user_id)
     sessions = []
 
     if auto_rag_assistant.storage:
-        rag_runs: List[AssistantRun] = auto_rag_assistant.storage.get_all_runs()
+        rag_runs: List[AssistantRun] = auto_rag_assistant.storage.get_all_runs(user_id=user_id)
 
         for r in rag_runs:
-            sessions.append({"run_id":r.run_id,"run_name":r.run_name})
+            sessions.append({"run_id":r.run_id,"run_name":r.run_name,"user_id":r.user_id})
     return JSONResponse(sessions)
 
 '''
 create new session
 '''
 @app.post("/sessions")
-def post_sessions():
-    auto_rag_assistant: Assistant = get_auto_rag_assistant()
+def post_sessions(user_id: Annotated[str | None, Header()] = None):
+    auto_rag_assistant: Assistant = get_auto_rag_assistant(user_id=user_id)
     run_id: Optional[str] = auto_rag_assistant.create_run()
     auto_rag_assistant.rename_run("New convo..")
     if run_id is None:
@@ -67,14 +72,19 @@ class ChatRequest(BaseModel):
 @app.post("/sessions/{run_id}/chat")
 def post_chat(run_id, body: ChatRequest):
     auto_rag_assistant = get_auto_rag_assistant(run_id=run_id)
-
+    auto_rag_assistant.read_from_storage()
+    
     return StreamingResponse(
         chat_response_streamer(auto_rag_assistant, body.message),
         media_type="text/event-stream",
-    )
-    # return JSONResponse("yo")
-   
+    )   
 
 def chat_response_streamer(assistant: Assistant, message: str) -> Generator:
+    yield "{\"run_name\":\"" + str(assistant.run_name) + "\"}"
     for chunk in assistant.run(message):
         yield chunk
+
+
+@app.get("/kb")
+def get_kb():
+    return "hello"
