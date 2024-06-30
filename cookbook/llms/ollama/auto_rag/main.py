@@ -15,6 +15,9 @@ app = FastAPI()
 def get_root():
     return {"hello":"world"}
 
+'''
+retrieve all sessions with run id and name
+'''
 @app.get("/sessions")
 def get_sessions():
     auto_rag_assistant: Assistant = get_auto_rag_assistant()
@@ -27,6 +30,23 @@ def get_sessions():
             sessions.append({"run_id":r.run_id,"run_name":r.run_name})
     return JSONResponse(sessions)
 
+
+'''
+create new session
+'''
+@app.post("/sessions")
+def post_sessions():
+    auto_rag_assistant: Assistant = get_auto_rag_assistant()
+    run_id: Optional[str] = auto_rag_assistant.create_run()
+    auto_rag_assistant.rename_run("New convo..")
+    if run_id is None:
+        raise HTTPException(status_code=500, detail="Failed to create assistant run")
+    print(f"Created Assistant Run: {run_id}")
+    return {"run_id":run_id}
+
+'''
+retrieve chat history of a session {run_id}
+'''
 @app.get("/sessions/{run_id}/history")
 def get_sessions_history(run_id):
     auto_rag_assistant = get_auto_rag_assistant(run_id=run_id)
