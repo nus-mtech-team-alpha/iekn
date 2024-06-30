@@ -30,7 +30,6 @@ def get_sessions():
             sessions.append({"run_id":r.run_id,"run_name":r.run_name})
     return JSONResponse(sessions)
 
-
 '''
 create new session
 '''
@@ -42,7 +41,7 @@ def post_sessions():
     if run_id is None:
         raise HTTPException(status_code=500, detail="Failed to create assistant run")
     print(f"Created Assistant Run: {run_id}")
-    return {"run_id":run_id}
+    return {"run_id":run_id, "run_name":auto_rag_assistant.run_name}
 
 '''
 retrieve chat history of a session {run_id}
@@ -56,3 +55,4 @@ def get_sessions_history(run_id):
     print(auto_rag_assistant.run_id)
     print("hist len:",len(assistant_chat_history))
     return JSONResponse(assistant_chat_history) 
+
