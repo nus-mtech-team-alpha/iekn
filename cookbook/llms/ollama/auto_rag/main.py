@@ -44,7 +44,7 @@ def post_sessions(user_id: Annotated[str | None, Header()] = None):
     auto_rag_assistant: Assistant = get_auto_rag_assistant(user_id=user_id)
     run_id: Optional[str] = auto_rag_assistant.create_run()
     auto_rag_assistant.rename_run("New convo..")
-    if run_id is None:
+    if not run_id:
         raise HTTPException(status_code=500, detail="Failed to create assistant run")
     print(f"Created Assistant Run: {run_id}")
     return {"run_id":run_id, "run_name":auto_rag_assistant.run_name}
@@ -76,7 +76,7 @@ def post_chat(run_id, body: ChatRequest):
     
     assistant_chat_history = auto_rag_assistant.memory.get_chat_history()
     print("hist len!:",len(assistant_chat_history))
-    if len(assistant_chat_history) == 2:
+    if len(assistant_chat_history) == 6:
         print("renaming chat")
         rename_run(auto_rag_assistant)
 
