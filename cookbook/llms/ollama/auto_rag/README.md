@@ -13,12 +13,16 @@ ollama pull nomic-embed-text
 ```
 
 ### 2. Create a virtual environment
-
+linux
 ```shell
 python3 -m venv ~/.venvs/aienv
 source ~/.venvs/aienv/bin/activate
 ```
-
+windows
+```shell
+python -m venv aienv
+aienv/Source/activate
+```
 ### 3. Install libraries
 
 ```shell
