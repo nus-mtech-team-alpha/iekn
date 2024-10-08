@@ -66,13 +66,13 @@ def get_auto_rag_assistant(
         name="auto_rag_assistant_ollama",
         run_id=run_id,
         user_id=user_id,
-        llm=Ollama(host="ollama", model="adrienbrault/nous-hermes2pro-llama3-8b:q8_0"),
+        llm=Ollama(host="localhost", model="adrienbrault/nous-hermes2pro-llama3-8b:q8_0"),
         storage=PgAssistantStorage(table_name="auto_rag_assistant_ollama", db_url=db_url),
         knowledge_base=AssistantKnowledge(
             vector_db=PgVector2(
                 db_url=db_url,
                 collection="auto_rag_documents_groq_ollama",
-                embedder=OllamaEmbedder(host="ollama", model="nomic-embed-text", dimensions=768),
+                embedder=OllamaEmbedder(host="localhost", model="nomic-embed-text", dimensions=768),
             ),
             # 1 reference are added to the prompt
             num_documents=1,
