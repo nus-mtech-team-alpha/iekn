@@ -1,6 +1,0 @@
-FROM python:3.10.14
-COPY ./cookbook/llms/ollama/auto_rag/ /app
-WORKDIR /app
-RUN pip install --no-cache-dir -r requirements.txt 
-ENTRYPOINT [ "streamlit" ]
-CMD ["run", "Chat.py"]
