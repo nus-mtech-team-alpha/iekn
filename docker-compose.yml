@@ -1,20 +1,47 @@
 services:
+  consul:
+    image: consul:1.15.4
+    container_name: consul
+    ports:
+      - "8500:8500"
+    healthcheck:
+      test: curl -f http://localhost:8500/v1/status/leader || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 3
+  mgmt-db:
+    image: mariadb:10.5.8
+    container_name: mgmt-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+    ports: 
+      - "3306:3306"
+    depends_on:
+      consul:
+        condition: service_healthy
+    healthcheck:
+      test: mariadb -u $$MYSQL_USER -p$$MYSQL_PASSWORD
+      interval: 5s
+      timeout: 5s
+      retries: 3
   mgmt-service:
     build:
       context: modules/mgmt-service/
       dockerfile: Containerfile
     container_name: mgmt-service
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
+      mgmt-db:
+        condition: service_healthy
   rag-service:
     build:
       context: modules/rag-service/
       dockerfile: Containerfile
     container_name: rag-service
     depends_on:
-      - consul
-  consul:
-    image: consul:1.15.4
-    container_name: consul
-    ports:
-      - "8500:8500"
+      consul:
+        condition: service_healthy
