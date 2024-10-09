@@ -13,3 +13,9 @@ on:
       - '**/*.md'
       - '**/*.txt'
   workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Testing another stub-workflow!"
