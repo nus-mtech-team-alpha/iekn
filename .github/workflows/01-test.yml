@@ -33,27 +33,61 @@ jobs:
   #       run: |
   #         pylint $(git ls-files '*.py')
 
-  sast:
-    name: SonarCloud Analysis
+  lint-pytest:
+    name: Lint Pytest
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ["3.9"]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
-          args: >
-            -Dsonar.organization=nus-mtech-team-alpha
-            -Dsonar.projectKey=nus-mtech-team-alpha_iekn
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/*.java
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          cd modules/rag-service \
+            python -m pip install --upgrade \
+            pip setuptools wheel \
+            ruff mypy pytest types-pyyaml
+          pip install --no-deps -r requirements.txt
+      
+      - name: Ruff format
+        run: |
+          ruff format .
+      
+      - name: Ruff check
+        run: |
+          ruff check .
+
+  # sast:
+  #   name: SonarCloud Analysis
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+      
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       env: 
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        
+  #       with:
+  #         args: >
+  #           -Dsonar.organization=nus-mtech-team-alpha
+  #           -Dsonar.projectKey=nus-mtech-team-alpha_iekn
+  #           -Dsonar.sources=.
+  #           -Dsonar.exclusions=**/*.java
   
   # dependency-review:
   #   name: Dependency Review 
