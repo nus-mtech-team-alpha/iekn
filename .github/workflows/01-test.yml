@@ -25,4 +25,3 @@ jobs:
             -Dsonar.organization=nus-mtech-team-alpha
             -Dsonar.projectKey=nus-mtech-team-alpha_iekn
             -Dsonar.sources=.
-            -Dsonar.python.coverage.reportPaths=coverage.xml
