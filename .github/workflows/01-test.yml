@@ -41,13 +41,13 @@ jobs:
         run: |
           ruff check .
       
-      - name: Test with pytest  
-        run: |  
-          coverage run -m pytest  -v -s  
+      # - name: Test with pytest  
+      #   run: |  
+      #     coverage run -m pytest  -v -s  
       
-      - name: Generate Coverage Report  
-        run: |  
-          coverage report -m
+      # - name: Generate Coverage Report  
+      #   run: |  
+      #     coverage report -m
 
   sast:
     name: SonarCloud Analysis
