@@ -18,7 +18,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '17'
       
       - name: SonarCloud Scan
@@ -29,6 +29,6 @@ jobs:
         
         with:
           args: >
-            -Dsonar.organization=
+            -Dsonar.organization=nus-mtech-team-alpha
             -Dsonar.projectKey=SonarCloudCodeAnalysis
             -Dsonar.python.coverage.reportPaths=coverage.xml
