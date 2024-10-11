@@ -20,7 +20,7 @@ jobs:
     uses: ./.github/workflows/01-test.yml
     secrets: inherit
 
-  build:
-    name: build
-    uses: ./.github/workflows/02-build.yml
-    secrets: inherit
+  # build:
+  #   name: build
+  #   uses: ./.github/workflows/02-build.yml
+  #   secrets: inherit
