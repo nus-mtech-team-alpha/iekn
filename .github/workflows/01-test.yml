@@ -49,40 +49,40 @@ jobs:
         run: |  
           coverage report -m
 
-  # sast:
-  #   name: SonarCloud Analysis
-  #   runs-on: ubuntu-latest
+  sast:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
-  #     - name: SonarCloud Scan
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       env: 
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
-  #       with:
-  #         args: >
-  #           -Dsonar.organization=nus-mtech-team-alpha
-  #           -Dsonar.projectKey=nus-mtech-team-alpha_iekn
-  #           -Dsonar.sources=.
-  #           -Dsonar.exclusions=**/*.java
+        with:
+          args: >
+            -Dsonar.organization=nus-mtech-team-alpha
+            -Dsonar.projectKey=nus-mtech-team-alpha_iekn
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/*.java
   
-  # dependency-review:
-  #   name: Dependency Review 
-  #   runs-on: ubuntu-latest
+  dependency-review:
+    name: Dependency Review 
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: 'Checkout repository'
-  #       uses: actions/checkout@v4
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
 
-  #     - name: 'Dependency Review'
-  #       uses: actions/dependency-review-action@v4
-  #       with:
-  #         deny-licenses: GPL-1.0-or-later
-  #         base-ref: ${{ github.event.pull_request.base.sha || 'main' }}
-  #         head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
-  #       # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options 
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+        with:
+          deny-licenses: GPL-1.0-or-later
+          base-ref: ${{ github.event.pull_request.base.sha || 'main' }}
+          head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
+        # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options 
