@@ -56,8 +56,8 @@ jobs:
           cd modules/rag-service \
             python -m pip install --upgrade \
             pip setuptools wheel \
-            ruff mypy pytest types-pyyaml
-          pip install --no-deps -r requirements.txt
+            ruff mypy pytest types-pyyaml \
+            pip install --no-deps -r requirements.txt
       
       - name: Ruff format
         run: |
