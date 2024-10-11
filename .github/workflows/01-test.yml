@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   # sast:
   #   name: SonarCloud Analysis
@@ -30,17 +33,21 @@ jobs:
   dependency-review:
     name: Dependency Review 
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
 
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v4
+        with:
+          allow-licenses: MIT, Apache-2.0, ISC, BSD-2-Clause, 0BSD, NOASSERTION
+          base-ref: ${{ github.event.pull_request.base.sha || 'main' }}
+          head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
         
         # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options for all available options.
-        with:
-          comment-summary-in-pr: always
+        # with:
+        #   comment-summary-in-pr: always
         #   fail-on-severity: moderate
         #   deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
         #   retry-on-snapshot-warnings: true
