@@ -5,24 +5,47 @@ on:
   workflow_call:
 
 jobs:
-  sast:
-    name: SonarCloud Analysis
-    runs-on: ubuntu-latest
+  # sast:
+  #   name: SonarCloud Analysis
+  #   runs-on: ubuntu-latest
 
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+      
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       env: 
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        
+  #       with:
+  #         args: >
+  #           -Dsonar.organization=nus-mtech-team-alpha
+  #           -Dsonar.projectKey=nus-mtech-team-alpha_iekn
+  #           -Dsonar.sources=.
+  #           -Dsonar.exclusions=**/*.java
+  
+  dast:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for stackhawk/hawkscan-action to upload code scanning alert info
+    
+    name: StackHawk
+    runs-on: ubuntu-20.04
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Start your service
+        run: ./your-service.sh &                  # ✏️ Update this to run your own service to be scanned
+
+      - name: Run HawkScan
+        uses: stackhawk/hawkscan-action@4c3258cd62248dac6d9fe91dd8d45928c697dee0
+        continue-on-error: true                   # ✏️ Set to false to break your build on scan errors
         with:
-          fetch-depth: 0
-      
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        
-        with:
-          args: >
-            -Dsonar.organization=nus-mtech-team-alpha
-            -Dsonar.projectKey=nus-mtech-team-alpha_iekn
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/*.java
+          apiKey: ${{ secrets.HAWK_API_KEY }}
+          codeScanningAlerts: true
+          githubToken: ${{ github.token }}
