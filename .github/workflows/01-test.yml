@@ -85,4 +85,4 @@ jobs:
           deny-licenses: GPL-1.0-or-later
           base-ref: ${{ github.event.pull_request.base.sha || 'main' }}
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
-        # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options 
+        # Commonly enabled options, https://github.com/actions/dependency-review-action#configuration-options 
