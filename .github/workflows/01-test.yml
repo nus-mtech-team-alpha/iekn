@@ -8,27 +8,27 @@ permissions:
   contents: read
 
 jobs:
-  # sast:
-  #   name: SonarCloud Analysis
-  #   runs-on: ubuntu-latest
+  sast:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
-  #     - name: SonarCloud Scan
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       env: 
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
-  #       with:
-  #         args: >
-  #           -Dsonar.organization=nus-mtech-team-alpha
-  #           -Dsonar.projectKey=nus-mtech-team-alpha_iekn
-  #           -Dsonar.sources=.
-  #           -Dsonar.exclusions=**/*.java
+        with:
+          args: >
+            -Dsonar.organization=nus-mtech-team-alpha
+            -Dsonar.projectKey=nus-mtech-team-alpha_iekn
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/*.java
   
   dependency-review:
     name: Dependency Review 
@@ -41,14 +41,7 @@ jobs:
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v4
         with:
-          # allow-licenses: MIT, Apache-2.0, ISC, BSD-2-Clause, 0BSD, LGPL-2.1, BSD-3-Clause
           deny-licenses: GPL-1.0-or-later
           base-ref: ${{ github.event.pull_request.base.sha || 'main' }}
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
-        
         # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options for all available options.
-        # with:
-        #   comment-summary-in-pr: always
-        #   fail-on-severity: moderate
-        #   deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
-        #   retry-on-snapshot-warnings: true
