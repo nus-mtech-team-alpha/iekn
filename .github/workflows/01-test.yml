@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  format-lint:
+  lint:
     runs-on: ubuntu-latest
 
     strategy:
