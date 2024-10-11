@@ -32,7 +32,3 @@ jobs:
         #     -Dsonar.organization=nus-mtech-team-alpha
         #     -Dsonar.projectKey=SonarCloudCodeAnalysis
         #     -Dsonar.python.coverage.reportPaths=coverage.xml
-  
-  dast:
-
-  unit_test:
