@@ -1,7 +1,11 @@
 # name: 02 - Build and Update Dockerhub Image
 
+# on: 
+#   workflow_dispatch:
+#   workflow_call:
+
 # jobs:
-#   build-release:
+#   build:
 #     name: docker_build
 #     runs-on: ubuntu-latest
 
