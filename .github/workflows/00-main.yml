@@ -2,12 +2,12 @@ name: 00 - Main CI / CD Pipeline
 
 on: 
   push:
-    branches: [ "feature/improve-cicd" ]
+    branches: [ "dev" ]
     paths-ignore: 
     - '**/*.md'
     - '**/*.txt'
   pull_request:
-    branches: [ "feature/improve-cicd" ]
+    branches: [ "dev" ]
     types: [opened, synchronize, reopened]
     paths-ignore: 
       - '**/*.md'
