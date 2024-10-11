@@ -15,19 +15,14 @@ jobs:
         with:
           fetch-depth: 0
       
-      # - name: Set up JDK 17
-      #   uses: actions/setup-java@v3
-      #   with:
-      #     distribution: 'zulu'
-      #     java-version: '17'
-      
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
-        # with:
-        #   args: >
-        #     -Dsonar.organization=nus-mtech-team-alpha
-        #     -Dsonar.projectKey=SonarCloudCodeAnalysis
-        #     -Dsonar.python.coverage.reportPaths=coverage.xml
+        with:
+          args: >
+            -Dsonar.organization=nus-mtech-team-alpha
+            -Dsonar.projectKey=nus-mtech-team-alpha_iekn
+            -Dsonar.sources=.
+            -Dsonar.python.coverage.reportPaths=coverage.xml
