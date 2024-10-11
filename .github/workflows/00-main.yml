@@ -1,0 +1,31 @@
+name: 00 - Main CI / CD Pipeline
+
+on: 
+  push:
+    branches: [ "dev" ]
+    paths-ignore: 
+    - '**/*.md'
+    - '**/*.txt'
+  pull_request:
+    branches: [ "dev" ]
+    types: [opened, synchronize, reopened]
+    paths-ignore: 
+      - '**/*.md'
+      - '**/*.txt'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: test
+    uses: ./.github/workflows/01-test.yml
+    secrets: inherit
+
+  # build:
+  #   name: build
+  #   uses: ./.github/workflows/02-build.yml
+  #   secrets: inherit
+
+  # deploy:
+  #   name: deploy
+  #   uses: ./.github/workflows/03-deploy.yml
+  #   secrets: inherit
