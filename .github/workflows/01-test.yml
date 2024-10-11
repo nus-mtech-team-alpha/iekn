@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   lint-pytest:
-    name: Lint Pytest
+    name: Ruff Linting & Pytest
     runs-on: ubuntu-latest
     
     strategy:
@@ -50,7 +50,7 @@ jobs:
           coverage report -m
 
   sast:
-    name: SonarCloud Analysis
+    name: SonarCloud
     runs-on: ubuntu-latest
 
     steps:

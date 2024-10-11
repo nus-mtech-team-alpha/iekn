@@ -15,17 +15,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  Test:
     name: test
     uses: ./.github/workflows/01-test.yml
     secrets: inherit
 
-  # build:
+  # Build:
   #   name: build
   #   uses: ./.github/workflows/02-build.yml
   #   secrets: inherit
 
-  # deploy:
+  # Deploy:
   #   name: deploy
   #   uses: ./.github/workflows/03-deploy.yml
   #   secrets: inherit
