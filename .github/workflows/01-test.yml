@@ -8,52 +8,52 @@ permissions:
   contents: read
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pylint
-      
-      - name: Analysing the code with pylint
-        run: |
-          pylint $(git ls-files '*.py')
-
-  # sast:
-  #   name: SonarCloud Analysis
+  # lint:
   #   runs-on: ubuntu-latest
 
+  #   strategy:
+  #     matrix:
+  #       python-version: ["3.8", "3.9", "3.10"]
+    
   #   steps:
   #     - name: Checkout code
   #       uses: actions/checkout@v4
+
+  #     - name: Set up Python ${{ matrix.python-version }}
+  #       uses: actions/setup-python@v3
   #       with:
-  #         fetch-depth: 0
+  #         python-version: ${{ matrix.python-version }}
       
-  #     - name: SonarCloud Scan
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       env: 
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install pylint
+      
+  #     - name: Analysing the code with pylint
+  #       run: |
+  #         pylint $(git ls-files '*.py')
+
+  sast:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
-  #       with:
-  #         args: >
-  #           -Dsonar.organization=nus-mtech-team-alpha
-  #           -Dsonar.projectKey=nus-mtech-team-alpha_iekn
-  #           -Dsonar.sources=.
-  #           -Dsonar.exclusions=**/*.java
+        with:
+          args: >
+            -Dsonar.organization=nus-mtech-team-alpha
+            -Dsonar.projectKey=nus-mtech-team-alpha_iekn
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/*.java
   
   # dependency-review:
   #   name: Dependency Review 
