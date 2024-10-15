@@ -10,8 +10,8 @@ local_ip = socket.gethostbyname(socket.gethostname())
 def register_service_with_consul():
     client = consul.Consul(host='consul', port=8500)
     client.agent.service.register(
-        name='rag-service',
-        service_id='rag-service-1',
+        name='kb-service',
+        service_id='kb-service-1',
         address=local_ip,
         tags=['fastapi', 'python', 'api'],
         port=5000,

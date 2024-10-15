@@ -1,0 +1,9 @@
+fastapi[standard]
+phidata
+pgvector
+ollama
+requests
+sqlalchemy
+psycopg[binary]
+pypdf
+python-consul
